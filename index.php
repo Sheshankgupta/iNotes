@@ -39,7 +39,7 @@
 <br/>
 <br/>
 <div class="container-fluid my-5">
-    <form action="save_notes.html" method="POST">
+    <form action="save_notes.php" method="POST">
         <label for="TitleControlInput" class="form-label h3">Title</label>
         <input type="text" class="form-control mb-3" id="TitleControlInput" name="title" placeholder="this field will hold title for your notes">
         <label for="ControlTextarea1" class="form-label h4">Description</label>
