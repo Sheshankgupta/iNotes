@@ -1,36 +1,35 @@
-<?php 
-$conn=mysqli_connect('localhost','root','','notes');
-if($conn){
-    //echo "Connected successfully";
-} else{
-    die("Couldn't connect");
-}
-if($_GET['id']){
-    $page=$_GET['id'];
-} else{
-    $page=1;
-}
-$per_page=10;
-$offset=($page-1)*$per_page;
-$search=$_GET['key'];
-echo $search;
-$sql="select * from notes where Description like '%$search%'";
-$query=mysqli_query($conn,$sql);
-$sql2="select * from notes where Description like '%$search%' limit $offset , $per_page";
-$query2=mysqli_query($conn,$sql2);
-$number_of_pages=(ceil(mysqli_num_rows($query)/$per_page));
-if($page==$number_of_pages){
-    $next=1;
-  } else{
-    $next=$page+1;
-  }
-  if($page==1){
-    $prev=$number_of_pages;
-  } else{
-    $prev=$page-1;
-  }
-
+<?php
+    $conn=mysqli_connect('localhost','root','','notes');
+    if($conn){
+        //echo "Connected successfully";
+    } else{
+        die("Couldn't connect");
+    }
+    if($_GET['id']){
+      $page=$_GET['id'];
+    } else{
+      $page=1;
+    }
+    $sql="select* from notes";
+    $query=mysqli_query($conn,$sql);
+    $per_page=10;
+    $number_of_pages=(ceil(mysqli_num_rows($query)/$per_page));
+    $offset=($page-1)*$per_page;
+      $sql2="select * from notes limit $offset , $per_page";
+    $query2=mysqli_query($conn,$sql2);
+    
+    if($page==$number_of_pages){
+      $next=1;
+    } else{
+      $next=$page+1;
+    }
+    if($page==1){
+      $prev=$number_of_pages;
+    } else{
+      $prev=$page-1;
+    }
 ?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -78,7 +77,7 @@ if($page==$number_of_pages){
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="index.html">Home</a>
+          <a class="nav-link" aria-current="page" href="index.php">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" href="data.php">Notes</a>
@@ -95,7 +94,7 @@ if($page==$number_of_pages){
   <div class="row">
     <div class="col-sm-8"></div>
     <div class="col-sm-4">
-  <form action="search.php" method="post" class="d-flex"  id="MySearch">
+  <form method="post" class="d-flex" onclick="addAction()" id="search_form" action="search.php?key=">
     <input type="text" name="search" id="search" class="form-control" style="width:15vw;">
     &nbsp;
     <input type="submit" value="Search" class="btn btn-light" name="search_query">
@@ -136,19 +135,19 @@ if($page==$number_of_pages){
 
 <div class="container d-flex mb-5">
 <div class="element">
-  <a href="search.php?key=<?php echo $search; ?>&&id=<?php echo $prev; ?>"style="color:black;">&#8592; Previous</a>
+  <a href="data.php?id=<?php echo $prev; ?>"style="color:black;">&#8592; Previous</a>
 </div>
 <?php
   for($i=1;$i<=$number_of_pages;$i++){
     ?>
     <div class="element">
-      <a href="search.php?key=<?php echo $search; ?>&&id=<?php echo $i; ?>" style="color:black;"><?php echo $i; ?></a>
+      <a href="data.php?id=<?php echo $i; ?>" style="color:black;"><?php echo $i; ?></a>
     </div>
     <?php
   }
 ?>
 <div class="element">
-  <a href="search.php?key=<?php echo $search; ?>&&id=<?php echo $next; ?>"style="color:black;">Next &#8594;</a>
+  <a href="data.php?id=<?php echo $next; ?>"style="color:black;">Next &#8594;</a>
 </div>
 </div>
 
@@ -248,9 +247,9 @@ if($page==$number_of_pages){
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script>
-      function AddUrl(){
-        var url=document.getElementById("MySearch");
-        url.action += document.getElementById("search").value;
+      function addAction(e){
+        var url=document.getElementById("search_form");
+        url.action+=document.getElementById("search").value;
       }
     </script>
   </body>
