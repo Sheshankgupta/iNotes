@@ -10,7 +10,11 @@
       $search=$_POST['search'];
       $sql="select * from notes where Description like '%$search%'";
     }else{
-      $page=$_GET['id'];
+      if($page){
+        $page=$_GET['id'];
+      }else{
+        $page=1;
+      }
       $sql="select* from notes";
     }
     $query=mysqli_query($conn,$sql);
@@ -92,10 +96,6 @@
   </div>
 </nav>
 
-
-<br/>
-<br/>
-<br/>
 <div class="container-fluid my-5">
   <div class="row">
     <div class="col-sm-8"></div>
